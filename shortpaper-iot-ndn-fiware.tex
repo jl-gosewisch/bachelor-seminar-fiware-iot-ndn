@@ -48,13 +48,16 @@ However, to fully realize the potential of IoT, there is a need for seamless int
 IoT-based Named Data Networking (IoT-NDN), which is an adaptation of the Named Data Networking (NDN \cite[Zhang]{b7}) protocol, addresses these needs by focusing on data names rather than data locations.
 This approach is particularly well-suited for IoT environments, where device mobility and varying network conditions are common. IoT-NDN simplifies data retrieval and dissemination processes, making them more efficient and reliable.
 This paper delves into the integration of FIWARE with IoT-NDN, exploring how this combination can effectively address the challenges posed by IoT environments \cite[Sheng]{b6}.
-We discuss the synergies between FIWARE's robust data handling capabilities and IoT-NDN's innovative approach to data networking. This integration not only enhances the efficiency of IoT systems but also opens up new possibilities for IoT applications across various sectors. By providing a detailed examination of this integration, we aim to contribute to the ongoing efforts in advancing IoT technologies and their applications.
+Our examination of IoT integration aims to boost IoT efficiency and open up new sector-specific application possibilities, contributing to the advancement of IoT technologies.
 
 
 \section{IoT-NDN and FIWARE}
 IoT-NDN introduces a significant shift in internet protocol strategies by transitioning to a name-centered approach.
-Instead of the conventional method, it utilizes systematically organized names for requesting data, which proves to be a more efficient methodology for Internet of Things (IoT) applications.
-In parallel, the FIWARE platform offers a range of essential components specifically designed for IoT development.
+Instead of the conventional method, it utilizes systematically organized names for requesting data.
+\begin{quote}
+    \textit{This means that in an NDN-based network, a packet could reference a specific piece of data, like a portion of a movie or a book, or even a command, like turning on lights.} \cite[NDN Project]{b8}
+\end{quote}
+In parallel, the FIWARE platform offers a range of essential components specifically designed for IoT development \cite[FIWARE Foundation]{b2}.
 These components include functionalities such as managing contextual information and seamlessly integrating big data services, thereby providing a robust and versatile framework for developing and enhancing IoT systems.
 
 \section{Integration of FIWARE and IoT-NDN}
@@ -65,9 +68,10 @@ enabling FIWARE clients to retrieve information from IoT-NDN networks through FI
 In order to align with FIWARE and its components, an adapter must partially implement the NGSIv2 API \cite[FIWARE developers]{b3}, optimally integrating a context provider with request forwarding capabilities.
 This facilitates a bridge that translates between FIWARE and IoT-NDN requests.
 At the thime of writing, this functionality is not fully realized in FIWARE Orion, the primary context provider \cite[FIWARE Orion]{b4}.
-Consequently, data from IoT-NDN sensors is directed to FIWARE for storage and integration, supporting components dependent on data notifications, like Quantumleap for time-series database management.
+Consequently, data from IoT-NDN sensors is directed to FIWARE for storage and integration, supporting components dependent on data notifications.
 Additionally, IoT-NDN devices require data access from the FIWARE context broker, necessitating the bridge to incorporate an IoT-NDN interface and establish a naming convention for mapping NDN requests to FIWARE entities.
-The proposed FIWARE NDN adapter functions within both the IoT-NDN network and FIWARE ecosystem, requiring an NDN client and connectivity to the IoT-NDN router, with communication to FIWARE facilitated through the NGSIv2 API via HTTP requests.
+The proposed FIWARE NDN adapter functions within both the IoT-NDN network and FIWARE ecosystem, as shown in Figure \ref{iot-ndn-fiware}.
+It is requiring an NDN client and connectivity to the IoT-NDN router, with communication to FIWARE facilitated through the NGSIv2 API via HTTP requests.
 
 \begin{figure}[htbp]
     \centerline{\includegraphics[scale=.4]{graph_draft.png}}
@@ -80,14 +84,14 @@ In IoT-NDN networks, data addressing employs hierarchical names, reflecting task
 FIWARE utilizes a similar structure with service-paths and entity IDs for entity identification.
 The integration of IoT-NDN with FIWARE necessitates a mapping strategy where IoT-NDN device identifiers (comprising domain names, service-paths, and entity-IDs) correlate with FIWARE entities.
 This system facilitates bi-directional information flow: IoT-NDN devices push data to a FIWARE adapter, updating corresponding entities, and also request data from FIWARE entities, irrespective of their presence in the IoT-NDN network.
-Command-Infos in the naming structure provide additional context or command details.
+Command-Infos in the naming structure provide additional context or command details, as shown in Figure \ref{ndn-example}.
 \begin{figure}[tb]
     \centerline{\includegraphics[scale=.4]{ndn-example.png}}
     \caption{An Example of Name-Structure of FIWARE and IoT-NDN.}
     \label{ndn-example}
 \end{figure}
 \vspace{6pt}
-Let us consider an example: a device within the //ndn/ domain might be named ndn/uzl/bib/room1/amount-of-people, interfacing with a FIWARE adapter designated as uzl/bib/fiware.
+Let us consider an example: a device within the \textit{//ndn/} domain might be named ndn/uzl/bib/room1/amount-of-people, interfacing with a FIWARE adapter designated as uzl/bib/fiware.
 This device could transmit data, such as the number of people in a room, at regular intervals (e.g., 1hz) to the FIWARE NDN adapter.
 This is achieved by sending an interest packet like //ndn/uzl/bib/fiware/\%get~value,which the FIWARE adapter utilizes to update the corresponding data.
 Similarly, when requesting data from a FIWARE entity, the request, prefixed with the adapter's name (//ndn/uzl/bib/fiware), reaches the adapter, which then retrieves and provides the requested data from the FIWARE domain.
@@ -116,5 +120,6 @@ Future work will focus on practical implementation, comprehensive evaluation, an
     \bibitem{b5} Hail, M. A. (2019). Iot-ndn: An IoT architecture via named data networking (ndn). In 2019 IEEE International Conference on Industry 4.0, Artificial Intelligence, and Communications Technology (IAICT), pages 74–80.
     \bibitem{b6} Sheng, Z., Yang, S., Yu, Y., Vasilakos, A. V., McCann, J. A., and Leung, K. K. (2013). A survey on the IETF protocol suite for the internet of things: standards, challenges, and opportunities. IEEE Wireless Communications, 20(6):91–98.
     \bibitem{b7} Zhang, L., Afanasyev, A., Burke, J., Jacobson, V., claffy, k., Crowley, P., Papadopoulos, C., Wang, L., and Zhang, B. (2014). Named data networking. SIGCOMM Comput. Commun. Rev., 44(3):66–73.
+    \bibitem{b8} Named Data Networking Project, https://named-data.net/project/execsummary/.
 \end{thebibliography}
 \end{document}
